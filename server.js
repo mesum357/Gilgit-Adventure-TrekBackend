@@ -89,7 +89,8 @@ function resolvePublicDir() {
   const candidates = [
     process.env.FRONTEND_PATH,
     path.join(__dirname, '..', 'Frontend'),
-    path.join(__dirname, '..', 'frontend')
+    path.join(__dirname, '..', 'frontend'),
+    path.join(__dirname, '..', 'Gilgit-Adventure-TrekFrontend')
   ].filter(Boolean);
   for (const c of candidates) {
     const abs = path.isAbsolute(c) ? c : path.join(__dirname, c);
@@ -102,7 +103,8 @@ function resolveAdminDir() {
   const candidates = [
     process.env.ADMIN_PATH,
     path.join(__dirname, '..', 'admin'),
-    path.join(__dirname, '..', 'Admin')
+    path.join(__dirname, '..', 'Admin'),
+    path.join(__dirname, '..', 'Gilgit-Adventure-TrekAdmin')
   ].filter(Boolean);
   for (const c of candidates) {
     const abs = path.isAbsolute(c) ? c : path.join(__dirname, c);
@@ -114,7 +116,7 @@ function resolveAdminDir() {
 // Serve static files — public site (VPS: ensure Frontend/ sits next to backend, or set FRONTEND_PATH)
 const publicDir = resolvePublicDir();
 if (publicDir === __dirname) {
-  console.warn('Frontend not found: add ../Frontend (or ../frontend), or set FRONTEND_PATH in .env');
+  console.warn('Frontend not found: use ../Frontend, ../Gilgit-Adventure-TrekFrontend, or set FRONTEND_PATH in backend .env');
 }
 app.use(express.static(publicDir));
 
