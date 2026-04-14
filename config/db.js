@@ -8,6 +8,12 @@ const connectDB = async () => {
     return cached;
   }
 
+  const uri = process.env.MONGODB_URI;
+  if (!uri) {
+    console.warn('MongoDB not configured: set MONGODB_URI to enable database features.');
+    return null;
+  }
+
   if (cachedPromise) {
     cached = await cachedPromise;
     global._mongooseConnection = cached;
@@ -15,7 +21,7 @@ const connectDB = async () => {
   }
 
   try {
-    cachedPromise = mongoose.connect(process.env.MONGODB_URI, {
+    cachedPromise = mongoose.connect(uri, {
       bufferCommands: false,
       maxPoolSize: 5,
       serverSelectionTimeoutMS: 5000,
@@ -31,7 +37,7 @@ const connectDB = async () => {
     cachedPromise = null;
     global._mongoosePromise = null;
     console.error('MongoDB connection error:', err.message);
-    throw err;
+    return null;
   }
 };
 

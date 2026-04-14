@@ -12,7 +12,7 @@ const destinations = [
   // ── TOUR PACKAGES (5 real itineraries) ──
   {
     id: 1, name: 'Blossom Jeep Safari', country: 'Pakistan', category: 'tour',
-    image: 'https://images.unsplash.com/photo-1586348943529-beaae6c28db9?w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1586348943529-  beaae6c28db9?w=600&q=80',
     rating: 4.9, reviews: 340, price: 85000,
     description: 'A 10-day spring jeep safari through the blossom-covered valleys of Northern Pakistan. Witness cherry and apricot blossoms at Fairy Meadows, Hunza Valley, and the Khunjerab Pass — the highest paved border crossing in the world.',
     highlights: ['Cherry & Apricot Blossoms', 'Fairy Meadows', 'Khunjerab Pass (4,693m)', 'Karakoram Highway', 'Gupis & Phandar Valley'],
