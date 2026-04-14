@@ -242,7 +242,7 @@ app.use((req, res) => {
 </html>`);
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 
 // Start server (needed for Render and local dev)
 app.listen(PORT, () => {
