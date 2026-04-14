@@ -85,15 +85,41 @@ app.use((req, res, next) => {
 // SEO routes (robots.txt, sitemaps) — before static files
 app.use('/', require('./routes/seo'));
 
-// Serve static files — public site
-const frontendDir = path.join(__dirname, '..', 'Frontend');
-const publicDir = fs.existsSync(frontendDir) ? frontendDir : __dirname;
+function resolvePublicDir() {
+  const candidates = [
+    process.env.FRONTEND_PATH,
+    path.join(__dirname, '..', 'Frontend'),
+    path.join(__dirname, '..', 'frontend')
+  ].filter(Boolean);
+  for (const c of candidates) {
+    const abs = path.isAbsolute(c) ? c : path.join(__dirname, c);
+    if (fs.existsSync(abs)) return abs;
+  }
+  return __dirname;
+}
+
+function resolveAdminDir() {
+  const candidates = [
+    process.env.ADMIN_PATH,
+    path.join(__dirname, '..', 'admin'),
+    path.join(__dirname, '..', 'Admin')
+  ].filter(Boolean);
+  for (const c of candidates) {
+    const abs = path.isAbsolute(c) ? c : path.join(__dirname, c);
+    if (fs.existsSync(abs)) return abs;
+  }
+  return null;
+}
+
+// Serve static files — public site (VPS: ensure Frontend/ sits next to backend, or set FRONTEND_PATH)
+const publicDir = resolvePublicDir();
+if (publicDir === __dirname) {
+  console.warn('Frontend not found: add ../Frontend (or ../frontend), or set FRONTEND_PATH in .env');
+}
 app.use(express.static(publicDir));
 
-// Serve admin panel
-const adminDir = path.join(__dirname, '..', 'admin');
-if (fs.existsSync(adminDir)) {
-  // Let express.static handle `/admin` -> `/admin/` directory redirect
+const adminDir = resolveAdminDir();
+if (adminDir) {
   app.use('/admin', express.static(adminDir, { index: 'index.html' }));
 }
 
