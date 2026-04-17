@@ -1,4 +1,4 @@
-require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') });
+require('dotenv').config({ path: require('path').join(__dirname, '.env') });
 const mongoose = require('mongoose');
 const Destination = require('./models/Destination');
 const Review = require('./models/Review');
@@ -11,7 +11,7 @@ const TeamMember = require('./models/TeamMember');
 const destinations = [
   // ── TOUR PACKAGES (5 real itineraries) ──
   {
-    id: 1, name: 'Blossom Jeep Safari', country: 'Pakistan', category: 'tour',
+    id: 1, name: 'Blossom Jeep Safari', country: 'Gilgit Region', category: 'tour',
     image: 'https://images.unsplash.com/photo-1586348943529-  beaae6c28db9?w=600&q=80',
     rating: 4.9, reviews: 340, price: 85000,
     description: 'A 10-day spring jeep safari through the blossom-covered valleys of Northern Pakistan. Witness cherry and apricot blossoms at Fairy Meadows, Hunza Valley, and the Khunjerab Pass — the highest paved border crossing in the world.',
@@ -39,7 +39,7 @@ const destinations = [
     excludes: ['International/domestic flights', 'Personal expenses', 'Travel insurance', 'Tips & gratuities', 'Sleeping bag (available for rent)']
   },
   {
-    id: 2, name: 'K2 Base Camp & Gondogoro La Trek', country: 'Pakistan', category: 'tour',
+    id: 2, name: 'K2 Base Camp & Gondogoro La Trek', country: 'Baltistan Region', category: 'tour',
     image: 'https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?w=600&q=80',
     rating: 4.9, reviews: 89, price: 350000,
     description: 'The ultimate 18–21 day expedition to the base of K2 (8,611m), the world\'s second-highest peak. Trek through the mighty Baltoro Glacier to Concordia, cross the challenging Gondogoro La pass (5,585m), and descend through Hushe Valley.',
@@ -76,7 +76,7 @@ const destinations = [
     excludes: ['International flights to Pakistan', 'Personal trekking gear (boots, clothing, sleeping bag)', 'Travel & rescue insurance (mandatory)', 'Tips for porters & guides', 'Personal expenses', 'Visa fees']
   },
   {
-    id: 3, name: 'Autumn Colors Tour', country: 'Pakistan', category: 'tour', featured: true,
+    id: 3, name: 'Autumn Colors Tour', country: 'Gilgit Region', category: 'tour', featured: true,
     image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80',
     rating: 4.9, reviews: 280, price: 95000,
     description: 'An 11-day tour through Pakistan\'s most spectacular autumn landscapes. Fly into Skardu, drive through golden poplar-lined roads of Hunza, visit Khunjerab Pass, camp at Fairy Meadows under Nanga Parbat, and return via the scenic Naran-Kaghan valley.',
@@ -105,7 +105,7 @@ const destinations = [
     excludes: ['International flights', 'Personal expenses', 'Travel insurance', 'Tips & gratuities', 'Sleeping bag rental']
   },
   {
-    id: 4, name: 'Summer Trekking & Tour', country: 'Pakistan', category: 'tour', featured: true,
+    id: 4, name: 'Summer Trekking & Tour', country: 'Gilgit Region', category: 'tour', featured: true,
     image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80',
     rating: 4.8, reviews: 160, price: 100000,
     description: 'A challenging 12-day summer adventure combining trekking at Nanga Parbat\'s Rupal Face with the cultural highlights of Hunza Valley. Visit the Hoper Glacier, cross Khunjerab Pass, and experience the best of Northern Pakistan in peak summer.',
@@ -135,7 +135,7 @@ const destinations = [
     excludes: ['International/domestic flights', 'Personal trekking gear', 'Travel insurance', 'Tips & gratuities', 'Personal expenses']
   },
   {
-    id: 5, name: 'October Explorer Tour', country: 'Pakistan', category: 'tour', featured: true,
+    id: 5, name: 'October Explorer Tour', country: 'Baltistan Region', category: 'tour', featured: true,
     image: 'https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=600&q=80',
     rating: 4.8, reviews: 195, price: 90000,
     description: 'An 11-day October journey showcasing the best of Gilgit-Baltistan in peak autumn. Fly into Skardu, explore Khaplu and Shigar Fort, camp at Fairy Meadows, drive through the golden Hunza Valley, visit colorful Naltar Lakes, and return via scenic Naran-Kaghan.',
@@ -166,7 +166,7 @@ const destinations = [
 
   // ── JEEP SAFARI PLANS (6 new tours) ──
   {
-    id: 9, name: 'Deosai Plains Jeep Safari', country: 'Pakistan', category: 'tour',
+    id: 9, name: 'Deosai Plains Jeep Safari', country: 'Baltistan Region', category: 'tour',
     image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600&q=80',
     rating: 4.8, reviews: 210, price: 75000,
     description: 'A 7-day jeep safari across the Deosai Plateau — the second-highest plateau in the world at 4,114m. Spot Himalayan brown bears, drive through endless wildflower meadows, camp beside Sheosar Lake, and explore the wild heart of Gilgit-Baltistan.',
@@ -191,7 +191,7 @@ const destinations = [
     excludes: ['Domestic flights (can be arranged)', 'Personal expenses', 'Travel insurance', 'Tips & gratuities', 'Sleeping bag (available for rent)']
   },
   {
-    id: 10, name: 'Fairy Meadows Jeep Safari', country: 'Pakistan', category: 'tour',
+    id: 10, name: 'Fairy Meadows Jeep Safari', country: 'Gilgit Region', category: 'tour',
     image: 'https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?w=600&q=80',
     rating: 4.9, reviews: 385, price: 65000,
     description: 'A 6-day jeep safari to the legendary Fairy Meadows — the base of Nanga Parbat (8,126m), the world\'s ninth-highest mountain. Thrilling jeep ride on the world\'s most dangerous road, camping under a billion stars, and sunrise views of the killer mountain.',
@@ -215,7 +215,7 @@ const destinations = [
     excludes: ['Personal expenses', 'Travel insurance', 'Tips & gratuities', 'Sleeping bag (available for rent)', 'Porter charges for personal luggage']
   },
   {
-    id: 11, name: 'Shandur Pass Jeep Safari', country: 'Pakistan', category: 'tour',
+    id: 11, name: 'Shandur Pass Jeep Safari', country: 'Gilgit Region', category: 'tour',
     image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80',
     rating: 4.8, reviews: 175, price: 80000,
     description: 'An 8-day jeep safari to the "Roof of the World" polo ground at Shandur Pass (3,700m). Drive through the remote valleys of Chitral and Gilgit, explore Phandar Lake, camp at the legendary polo field, and witness the raw beauty of Pakistan\'s most isolated mountain passes.',
@@ -241,7 +241,7 @@ const destinations = [
     excludes: ['Chitral–Islamabad flight (can be arranged)', 'Personal expenses', 'Travel insurance', 'Tips & gratuities', 'Sleeping bag rental']
   },
   {
-    id: 12, name: 'Khunjerab Pass Jeep Safari', country: 'Pakistan', category: 'tour',
+    id: 12, name: 'Khunjerab Pass Jeep Safari', country: 'Gilgit Region', category: 'tour',
     image: 'https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=600&q=80',
     rating: 4.9, reviews: 420, price: 78000,
     description: 'A 7-day jeep safari along the legendary Karakoram Highway to Khunjerab Pass (4,693m) — the highest paved international border crossing in the world. Experience Hunza Valley, Attabad Lake, Passu Cones, and the China border at the roof of the world.',
@@ -266,7 +266,7 @@ const destinations = [
     excludes: ['Personal expenses', 'Travel insurance', 'Tips & gratuities', 'Sleeping bag (available for rent)']
   },
   {
-    id: 13, name: 'Shimshal Valley Jeep Safari', country: 'Pakistan', category: 'tour',
+    id: 13, name: 'Shimshal Valley Jeep Safari', country: 'Gilgit Region', category: 'tour',
     image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80',
     rating: 4.7, reviews: 95, price: 88000,
     description: 'A 9-day jeep safari to the remote Shimshal Valley — Pakistan\'s highest and most isolated settlement at 3,100m. Drive the thrilling Shimshal Road carved into cliffs, meet the legendary Shimshali mountaineers, visit Shimshal Pass, and experience authentic village life in the shadow of 7,000m peaks.',
@@ -293,7 +293,7 @@ const destinations = [
     excludes: ['Personal expenses', 'Travel insurance', 'Tips & gratuities', 'Sleeping bag (available for rent)', 'Personal trekking gear']
   },
   {
-    id: 14, name: 'Hushe Valley Jeep Safari', country: 'Pakistan', category: 'tour',
+    id: 14, name: 'Hushe Valley Jeep Safari', country: 'Baltistan Region', category: 'tour',
     image: 'https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=600&q=80',
     rating: 4.8, reviews: 130, price: 92000,
     description: 'A 9-day jeep safari to the remote Hushe Valley — the gateway to some of the world\'s highest peaks including Masherbrum (7,821m) and Laila Peak. Drive through Skardu, explore ancient forts, camp at the base of towering granite walls, and experience the raw Karakoram up close.',
@@ -320,30 +320,282 @@ const destinations = [
     excludes: ['Domestic flights (can be arranged)', 'Personal expenses', 'Travel insurance', 'Tips & gratuities', 'Personal trekking gear', 'Sleeping bag rental']
   },
 
-  // ── STANDALONE DESTINATIONS (3) ──
+  // ── GILGIT REGION DESTINATIONS ──
   {
-    id: 6, name: 'Naltar Valley', country: 'Pakistan', category: 'valley',
+    id: 6, name: 'Naltar Valley', country: 'Gilgit Region', category: 'valley',
     image: 'https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?w=600&q=80',
     rating: 4.8, reviews: 160, price: 40000,
     description: 'Famous for its tri-colored lakes that change hues with the seasons, Naltar Valley also hosts Pakistan\'s only ski resort. Pine forests, wildflowers, and crystal-clear streams await.',
     highlights: ['Naltar Lakes', 'Naltar Ski Resort', 'Pine Forest Walks', 'Wildflower Meadows', 'Drone Photography Spots'],
-    mapX: 682, mapY: 152, featured: false
+    mapX: 682, mapY: 152, featured: true
   },
   {
-    id: 7, name: 'Deosai National Park', country: 'Pakistan', category: 'lake',
+    id: 8, name: 'Attabad Lake', country: 'Gilgit Region', category: 'lake',
+    image: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=600&q=80',
+    rating: 4.7, reviews: 180, price: 38000,
+    description: 'The stunning turquoise Attabad Lake formed by a massive landslide in 2010. A photographer\'s paradise along the Karakoram Highway with boat rides and breathtaking mountain backdrops.',
+    highlights: ['Attabad Lake Boating', 'Turquoise Waters', 'Karakoram Highway Views', 'Sunset Photography'],
+    mapX: 706, mapY: 142, featured: true
+  },
+  {
+    id: 15, name: 'Hunza Valley', country: 'Gilgit Region', category: 'valley',
+    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80',
+    rating: 4.9, reviews: 520, price: 35000,
+    description: 'The crown jewel of Northern Pakistan. Hunza Valley offers stunning views of Rakaposhi, Ultar Sar, and Lady Finger Peak, surrounded by ancient forts, terraced farms, and warm hospitality.',
+    highlights: ['Karimabad Town', 'Eagle\'s Nest Viewpoint', 'Cherry Blossom Season', 'Rakaposhi Views', 'Local Apricot Orchards'],
+    featured: true
+  },
+  {
+    id: 16, name: 'Nagar Valley', country: 'Gilgit Region', category: 'valley',
+    image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80',
+    rating: 4.7, reviews: 140, price: 30000,
+    description: 'A hidden gem across the river from Hunza, Nagar Valley is famous for its glaciers, lush green meadows, and the stunning Hoper and Rush Lake treks.',
+    highlights: ['Hoper Glacier', 'Rush Lake Trek', 'Golden Peak Views', 'Local Village Life', 'Nagar Fort'],
+    featured: true
+  },
+  {
+    id: 17, name: 'Ghizer Valley', country: 'Gilgit Region', category: 'valley',
+    image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600&q=80',
+    rating: 4.6, reviews: 95, price: 32000,
+    description: 'Home to the pristine Phandar Lake and lush green valleys, Ghizer is one of the most peaceful and unspoiled districts in Gilgit-Baltistan.',
+    highlights: ['Phandar Lake', 'Gupis Valley', 'Shandur Pass', 'Khalti Lake', 'Trout Fishing'],
+    featured: true
+  },
+  {
+    id: 18, name: 'Diamer District', country: 'Gilgit Region', category: 'valley',
+    image: 'https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?w=600&q=80',
+    rating: 4.5, reviews: 75, price: 28000,
+    description: 'Gateway to the mighty Nanga Parbat, Diamer District offers rugged mountain landscapes, the legendary Fairy Meadows trek, and views of the world\'s ninth-highest peak.',
+    highlights: ['Nanga Parbat Views', 'Fairy Meadows Access', 'Indus River Gorge', 'Chilas Rock Carvings'],
+    featured: true
+  },
+  {
+    id: 19, name: 'Fairy Meadows', country: 'Gilgit Region', category: 'meadow',
+    image: 'https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?w=600&q=80',
+    rating: 4.9, reviews: 450, price: 25000,
+    description: 'A breathtaking alpine meadow at 3,300m offering front-row views of Nanga Parbat (8,126m). Accessible via the world\'s most thrilling jeep track and a scenic trek through pine forests.',
+    highlights: ['Nanga Parbat Panorama', 'Stargazing at 3,300m', 'Pine Forest Trek', 'Beyal Camp Hike', 'Camping Under Stars'],
+    featured: true
+  },
+  {
+    id: 20, name: 'Nanga Parbat BC', country: 'Gilgit Region', category: 'trek',
+    image: 'https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?w=600&q=80',
+    rating: 4.8, reviews: 120, price: 45000,
+    description: 'Trek to the base camp of the "Killer Mountain" — the world\'s ninth-highest peak at 8,126m. The Rupal Face is the highest mountain face on Earth at 4,600m vertical.',
+    highlights: ['Rupal Face (4,600m Wall)', 'Base Camp at 3,967m', 'Alpine Meadows', 'Glacier Views', 'High-Altitude Photography'],
+    featured: true
+  },
+  {
+    id: 21, name: 'Rakaposhi View', country: 'Gilgit Region', category: 'viewpoint',
+    image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80',
+    rating: 4.8, reviews: 310, price: 15000,
+    description: 'One of the most accessible and stunning mountain viewpoints in the world. See the 7,788m Rakaposhi peak from the Karakoram Highway — no trekking required.',
+    highlights: ['Rakaposhi (7,788m)', 'Roadside Viewpoint', 'Minapin Glacier', 'Photography Spot', 'Sunrise Views'],
+    featured: true
+  },
+  {
+    id: 22, name: 'Eagle\'s Nest', country: 'Gilgit Region', category: 'viewpoint',
+    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80',
+    rating: 4.9, reviews: 380, price: 10000,
+    description: 'The famous Duikar viewpoint above Karimabad offering a 360-degree panorama of Hunza Valley with views of Rakaposhi, Lady Finger Peak, Ultar Sar, and Golden Peak.',
+    highlights: ['360° Panorama', 'Sunrise & Sunset Views', 'Rakaposhi & Lady Finger', 'Hunza Valley Below', 'Photography Paradise'],
+    featured: true
+  },
+  {
+    id: 23, name: 'Passu Cones', country: 'Gilgit Region', category: 'peak',
+    image: 'https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=600&q=80',
+    rating: 4.8, reviews: 290, price: 12000,
+    description: 'The dramatic cathedral-like spires of Passu, also known as Passu Cathedral or Tupopdan. One of the most photographed mountain formations along the Karakoram Highway.',
+    highlights: ['Cathedral Spires', 'Hussaini Suspension Bridge', 'Passu Glacier', 'Borith Lake Nearby', 'KKH Viewpoint'],
+    featured: true
+  },
+  {
+    id: 24, name: 'Borith Lake', country: 'Gilgit Region', category: 'lake',
+    image: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=600&q=80',
+    rating: 4.6, reviews: 110, price: 10000,
+    description: 'A serene high-altitude lake near Passu offering camping spots with views of Passu Cones and surrounding glaciers. A migratory bird haven and a peaceful escape.',
+    highlights: ['Lakeside Camping', 'Migratory Birds', 'Passu Cones Views', 'Peaceful Atmosphere', 'Glacier Backdrop'],
+    featured: true
+  },
+  {
+    id: 25, name: 'Karimabad', country: 'Gilgit Region', category: 'heritage',
+    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80',
+    rating: 4.8, reviews: 340, price: 15000,
+    description: 'The cultural capital of Hunza Valley. A charming hillside town with ancient forts, terraced farms, and stunning mountain views. The perfect base for exploring Hunza.',
+    highlights: ['Baltit Fort', 'Altit Fort', 'Local Bazaar', 'Terraced Farms', 'Mountain Panorama'],
+    featured: true
+  },
+  {
+    id: 26, name: 'Baltit Fort', country: 'Gilgit Region', category: 'fort',
+    image: 'https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=600&q=80',
+    rating: 4.7, reviews: 260, price: 5000,
+    description: 'A 700-year-old ancient fort perched above Karimabad, once the seat of the Mirs of Hunza. Now a UNESCO-restored museum showcasing Hunza\'s royal heritage.',
+    highlights: ['700-Year History', 'UNESCO Restored', 'Museum & Artifacts', 'Hunza Valley Views', 'Traditional Architecture'],
+    featured: true
+  },
+  {
+    id: 27, name: 'Altit Fort', country: 'Gilgit Region', category: 'fort',
+    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80',
+    rating: 4.7, reviews: 220, price: 5000,
+    description: 'One of the oldest forts in the Hunza region, Altit Fort dates back over 900 years. Features a beautiful garden and panoramic views of the Hunza River below.',
+    highlights: ['900-Year-Old Fort', 'Royal Garden', 'Hunza River Views', 'Ancient Watchtower', 'Aga Khan Restored'],
+    featured: true
+  },
+  {
+    id: 28, name: 'Khunjerab Pass', country: 'Gilgit Region', category: 'pass',
+    image: 'https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=600&q=80',
+    rating: 4.9, reviews: 400, price: 20000,
+    description: 'The highest paved international border crossing in the world at 4,693m, connecting Pakistan and China. Spot yaks, Marco Polo sheep, and experience the roof of the world.',
+    highlights: ['4,693m Elevation', 'Pakistan-China Border', 'Yaks & Wildlife', 'Snow-Capped Peaks', 'Karakoram Highway End'],
+    featured: true
+  },
+  {
+    id: 29, name: 'Phander Valley', country: 'Gilgit Region', category: 'valley',
+    image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600&q=80',
+    rating: 4.7, reviews: 105, price: 28000,
+    description: 'A hidden paradise in Ghizer District with a pristine turquoise lake surrounded by lush green hills. Often called the "Switzerland of Pakistan" for its serene beauty.',
+    highlights: ['Phandar Lake', 'Trout Fishing', 'Lush Green Hills', 'Peaceful Camping', 'Sunset Over Lake'],
+    featured: true
+  },
+
+  // ── BALTISTAN REGION DESTINATIONS ──
+  {
+    id: 30, name: 'Skardu Valley', country: 'Baltistan Region', category: 'valley',
+    image: 'https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=600&q=80',
+    rating: 4.9, reviews: 480, price: 35000,
+    description: 'The adventure capital of Pakistan, surrounded by towering peaks, crystal-clear lakes, and ancient forts. Gateway to K2 and the mighty Karakoram.',
+    highlights: ['Skardu Fort', 'Kachura Lakes', 'Shangrila Resort', 'Gateway to K2', 'Cold Desert'],
+    featured: true
+  },
+  {
+    id: 31, name: 'Shigar Valley', country: 'Baltistan Region', category: 'valley',
+    image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80',
+    rating: 4.7, reviews: 150, price: 25000,
+    description: 'Home to the beautifully restored Shigar Fort (now a heritage hotel) and lush orchards. The gateway to the mighty Baltoro Glacier and K2.',
+    highlights: ['Shigar Fort Heritage', 'Orchards & Farms', 'Gateway to Baltoro', 'Shigar River', 'Local Culture'],
+    featured: true
+  },
+  {
+    id: 32, name: 'Khaplu Valley', country: 'Baltistan Region', category: 'valley',
+    image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600&q=80',
+    rating: 4.7, reviews: 130, price: 28000,
+    description: 'A serene valley in Baltistan known for the stunning Khaplu Palace, Chaqchan Mosque (600+ years old), and as the gateway to Hushe Valley and Masherbrum.',
+    highlights: ['Khaplu Palace', 'Chaqchan Mosque', 'Hushe Valley Access', 'Organic Farms', 'Traditional Architecture'],
+    featured: true
+  },
+  {
+    id: 33, name: 'Shangrila Resort', country: 'Baltistan Region', category: 'resort',
+    image: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=600&q=80',
+    rating: 4.8, reviews: 350, price: 20000,
+    description: 'Known as "Heaven on Earth," Shangrila Resort sits beside the stunning Lower Kachura Lake. A legendary retreat with an airplane-shaped restaurant and breathtaking scenery.',
+    highlights: ['Lower Kachura Lake', 'Airplane Restaurant', 'Lush Gardens', 'Mountain Backdrop', 'Boating'],
+    featured: true
+  },
+  {
+    id: 7, name: 'Deosai Plains', country: 'Baltistan Region', category: 'lake',
     image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600&q=80',
     rating: 4.8, reviews: 135, price: 30000,
     description: 'The "Land of Giants" — one of the highest plateaus in the world at 4,114m. Home to the Himalayan brown bear, golden marmots, and endless fields of wildflowers in summer.',
     highlights: ['Sheosar Lake', 'Brown Bear Spotting', 'Wildflower Fields', 'Bara Pani', 'Night Sky Photography'],
-    mapX: 722, mapY: 185, featured: false
+    mapX: 722, mapY: 185, featured: true
   },
   {
-    id: 8, name: 'Attabad Lake & Passu', country: 'Pakistan', category: 'lake',
+    id: 34, name: 'Sheosar Lake', country: 'Baltistan Region', category: 'lake',
     image: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=600&q=80',
-    rating: 4.7, reviews: 180, price: 38000,
-    description: 'The stunning turquoise Attabad Lake, the iconic Passu Cones, and the thrilling Hussaini Suspension Bridge. A photographer\'s paradise along the Karakoram Highway.',
-    highlights: ['Attabad Lake Boating', 'Passu Cones Viewpoint', 'Hussaini Suspension Bridge', 'Borith Lake', 'Passu Glacier'],
-    mapX: 706, mapY: 142, featured: false
+    rating: 4.8, reviews: 200, price: 15000,
+    description: 'A stunning high-altitude lake on the Deosai Plateau at 4,142m. Its crystal-clear waters reflect the surrounding peaks creating a mirror-like surface.',
+    highlights: ['Crystal Clear Waters', 'Deosai Plateau', '4,142m Altitude', 'Reflection Photography', 'Wildflowers'],
+    featured: true
+  },
+  {
+    id: 35, name: 'Upper Kachura', country: 'Baltistan Region', category: 'lake',
+    image: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=600&q=80',
+    rating: 4.8, reviews: 280, price: 10000,
+    description: 'A mesmerizing emerald-green lake hidden in the mountains above Skardu. Known for its incredibly clear water where you can see the bottom even at great depths.',
+    highlights: ['Crystal Clear Green Water', 'Hidden Mountain Lake', 'Boat Rides', 'Cliff Jumping', 'Photography Spot'],
+    featured: true
+  },
+  {
+    id: 36, name: 'Lower Kachura', country: 'Baltistan Region', category: 'lake',
+    image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600&q=80',
+    rating: 4.7, reviews: 320, price: 8000,
+    description: 'The scenic lake at Shangrila Resort surrounded by lush gardens and towering mountains. A perfect spot for boating and relaxation.',
+    highlights: ['Shangrila Resort', 'Boating', 'Mountain Views', 'Gardens', 'Peaceful Retreat'],
+    featured: true
+  },
+  {
+    id: 37, name: 'Satpara Lake', country: 'Baltistan Region', category: 'lake',
+    image: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=600&q=80',
+    rating: 4.6, reviews: 170, price: 8000,
+    description: 'A natural lake near Skardu fed by the Satpara Stream. Surrounded by barren mountains, its deep blue waters supply drinking water to Skardu city.',
+    highlights: ['Deep Blue Waters', 'Mountain Backdrop', 'Skardu Water Source', 'Scenic Drive', 'Fishing'],
+    featured: true
+  },
+  {
+    id: 38, name: 'Cold Desert', country: 'Baltistan Region', category: 'desert',
+    image: 'https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=600&q=80',
+    rating: 4.5, reviews: 190, price: 5000,
+    description: 'One of the highest cold deserts in the world, located near Skardu. Sand dunes surrounded by snow-capped mountains create a surreal landscape unique to Baltistan.',
+    highlights: ['Sand Dunes', 'Mountain Backdrop', 'Surreal Landscape', 'Photography', 'Near Skardu'],
+    featured: true
+  },
+  {
+    id: 39, name: 'Mantokha Waterfall', country: 'Baltistan Region', category: 'waterfall',
+    image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600&q=80',
+    rating: 4.6, reviews: 140, price: 5000,
+    description: 'A beautiful waterfall cascading down rocky cliffs near Skardu. Surrounded by lush greenery, it\'s a refreshing stop on the way to Shigar Valley.',
+    highlights: ['Cascading Waterfall', 'Lush Greenery', 'Picnic Spot', 'Short Hike', 'Near Shigar Road'],
+    featured: true
+  },
+  {
+    id: 40, name: 'Shigar Fort', country: 'Baltistan Region', category: 'fort',
+    image: 'https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=600&q=80',
+    rating: 4.7, reviews: 210, price: 8000,
+    description: 'A 400-year-old fort beautifully restored by the Aga Khan Trust. Now a heritage hotel and museum showcasing Balti culture and royal history.',
+    highlights: ['400-Year History', 'Heritage Hotel', 'Aga Khan Restored', 'Balti Culture Museum', 'Orchards'],
+    featured: true
+  },
+  {
+    id: 41, name: 'Buddha Rock', country: 'Baltistan Region', category: 'heritage',
+    image: 'https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=600&q=80',
+    rating: 4.5, reviews: 120, price: 3000,
+    description: 'Ancient Buddhist rock carvings near Skardu dating back to the 8th century. Evidence of the region\'s rich Buddhist heritage before the arrival of Islam.',
+    highlights: ['Ancient Carvings', '8th Century Art', 'Buddhist Heritage', 'Historical Site', 'Near Skardu'],
+    featured: true
+  },
+  {
+    id: 42, name: 'Basho Valley', country: 'Baltistan Region', category: 'valley',
+    image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80',
+    rating: 4.6, reviews: 85, price: 20000,
+    description: 'A pristine valley near Skardu known for its dense pine forests, wild trout streams, and peaceful camping spots. A hidden retreat away from the crowds.',
+    highlights: ['Pine Forests', 'Trout Fishing', 'Camping', 'Peaceful Retreat', 'Nature Walks'],
+    featured: true
+  },
+  {
+    id: 43, name: 'Hushe Valley', country: 'Baltistan Region', category: 'valley',
+    image: 'https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?w=600&q=80',
+    rating: 4.7, reviews: 100, price: 30000,
+    description: 'Gateway to some of the world\'s highest peaks including Masherbrum (7,821m) and Laila Peak. A remote valley offering raw Karakoram mountain experiences.',
+    highlights: ['Masherbrum Views', 'Laila Peak', 'Remote Village Life', 'Trekking Base', 'Granite Walls'],
+    featured: true
+  },
+
+  // ── OTHER REGIONS DESTINATIONS ──
+  {
+    id: 44, name: 'Naran & Kaghan', country: 'Other Region', category: 'valley',
+    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80',
+    rating: 4.7, reviews: 500, price: 25000,
+    description: 'A stunning valley in Khyber Pakhtunkhwa famous for Lake Saif-ul-Malook, Lulusar Lake, and Babusar Pass. One of Pakistan\'s most popular tourist destinations.',
+    highlights: ['Lake Saif-ul-Malook', 'Lulusar Lake', 'Babusar Pass', 'Naran Town', 'Kaghan Valley'],
+    featured: true
+  },
+  {
+    id: 45, name: 'Swat Valley', country: 'Other Region', category: 'valley',
+    image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600&q=80',
+    rating: 4.7, reviews: 420, price: 22000,
+    description: 'Known as the "Switzerland of the East," Swat Valley offers lush green landscapes, Buddhist ruins, skiing at Malam Jabba, and the stunning Mahodand Lake.',
+    highlights: ['Malam Jabba Ski Resort', 'Mahodand Lake', 'Buddhist Ruins', 'Fizagat Park', 'Mingora City'],
+    featured: true
   }
 ];
 

@@ -74,10 +74,10 @@ app.use((req, res, next) => {
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=()');
   res.setHeader('X-DNS-Prefetch-Control', 'on');
-  // Cache static assets aggressively (CSS, JS, images)
+  // Cache static assets (disabled in dev, enable for production)
   const url = req.url;
   if (url.match(/\.(css|js|jpg|jpeg|png|gif|webp|svg|ico|woff2?)$/i)) {
-    res.setHeader('Cache-Control', 'public, max-age=2592000, immutable'); // 30 days
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate'); // dev mode
   }
   next();
 });
