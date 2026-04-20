@@ -15,11 +15,8 @@ router.get('/robots.txt', async (req, res) => {
 
 User-agent: *
 Allow: /
-Allow: /css/
-Allow: /js/
-Allow: /images/
 
-# Block admin panel
+# Block admin panel & API
 Disallow: /admin/
 Disallow: /api/
 
@@ -28,18 +25,8 @@ Disallow: /login.html
 Disallow: /register.html
 Disallow: /profile.html
 
-# Block query parameters
-Disallow: /*?*
-
-# Crawl-delay (be gentle on the server)
-Crawl-delay: 2
-
 # Sitemaps
 Sitemap: ${baseUrl}/sitemap-index.xml
-
-# Allow image crawling for Google Images
-User-agent: Googlebot-Image
-Allow: /images/
 `;
 
     res.type('text/plain').send(robots);
@@ -94,6 +81,9 @@ router.get('/sitemap-pages.xml', async (req, res) => {
     const pages = [
       { loc: '/', priority: '1.0', changefreq: 'daily' },
       { loc: '/destinations.html', priority: '0.9', changefreq: 'weekly' },
+      { loc: '/treks.html', priority: '0.9', changefreq: 'weekly' },
+      { loc: '/culture.html', priority: '0.8', changefreq: 'weekly' },
+      { loc: '/gallery.html', priority: '0.7', changefreq: 'weekly' },
       { loc: '/jeep-safaris.html', priority: '0.9', changefreq: 'weekly' },
       { loc: '/book.html', priority: '0.9', changefreq: 'weekly' },
       { loc: '/deals.html', priority: '0.8', changefreq: 'daily' },
