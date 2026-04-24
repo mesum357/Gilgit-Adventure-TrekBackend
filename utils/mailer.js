@@ -46,13 +46,13 @@ function buildSubscriberConfirmationHtml(name) {
             <td style="padding:40px 32px 24px;">
               <h2 style="margin:0 0 16px;color:#1a2332;font-size:22px;">Welcome aboard, ${escapeHtml(displayName)}!</h2>
               <p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#3a4658;">
-                Thank you for subscribing to <strong>Gilgit Adventure Treks</strong>. You are now part of a community of over 12,000 adventure seekers who get our latest trek updates, seasonal alerts, and exclusive deals for Northern Pakistan.
+                Thank you for subscribing to <strong>Gilgit Adventure Treks</strong>. You are now part of a community of over 12,000 adventure seekers who get our latest trek updates, seasonal alerts, and insider guides for Northern Pakistan.
               </p>
               <p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#3a4658;">
                 Here is what you can expect from us:
               </p>
               <ul style="margin:0 0 24px;padding-left:20px;font-size:15px;line-height:1.8;color:#3a4658;">
-                <li>Exclusive seasonal trek deals and discounts</li>
+                <li>Exclusive seasonal trek updates and offers</li>
                 <li>Weather and route updates for Gilgit-Baltistan</li>
                 <li>Insider guides to destinations like K2, Fairy Meadows, Deosai, and more</li>
                 <li>Early access to new jeep safari packages</li>
@@ -100,7 +100,7 @@ async function sendSubscriberConfirmation({ email, name }) {
     to: email,
     subject: 'Welcome to Gilgit Adventure Treks!',
     html: buildSubscriberConfirmationHtml(name),
-    text: `Welcome aboard${name ? ', ' + name : ''}!\n\nThank you for subscribing to Gilgit Adventure Treks. You will now receive exclusive trek deals, seasonal alerts, and insider guides for Northern Pakistan.\n\nVisit us: https://gilgitadventuretreks.com\n\n© ${new Date().getFullYear()} Gilgit Adventure Treks`
+    text: `Welcome aboard${name ? ', ' + name : ''}!\n\nThank you for subscribing to Gilgit Adventure Treks. You will now receive exclusive trek updates, seasonal alerts, and insider guides for Northern Pakistan.\n\nVisit us: https://gilgitadventuretreks.com\n\n© ${new Date().getFullYear()} Gilgit Adventure Treks`
   });
 
   return { sent: true, messageId: info.messageId };

@@ -2,7 +2,6 @@ require('dotenv').config({ path: require('path').join(__dirname, '.env') });
 const mongoose = require('mongoose');
 const Destination = require('./models/Destination');
 const Review = require('./models/Review');
-const Deal = require('./models/Deal');
 const Admin = require('./models/Admin');
 const Video = require('./models/Video');
 const GalleryImage = require('./models/GalleryImage');
@@ -638,31 +637,6 @@ const reviews = [
   }
 ];
 
-const now = Date.now();
-const deals = [
-  {
-    name: 'Blossom Jeep Safari — Early Bird', destination: 'Blossom Jeep Safari',
-    image: 'https://images.unsplash.com/photo-1586348943529-beaae6c28db9?w=600&q=80',
-    oldPrice: 95000, newPrice: 85000, badge: 'Hot Deal',
-    description: '10-day spring jeep safari — cherry blossoms, Fairy Meadows, Hunza, Khunjerab Pass. Book early and save $50/person!',
-    expiresAt: new Date(now + 47 * 3600000)
-  },
-  {
-    name: 'Autumn Colors Tour — Group Discount', destination: 'Autumn Colors Tour',
-    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80',
-    oldPrice: 110000, newPrice: 95000, badge: 'Trending',
-    description: '11-day autumn tour — Skardu flight, golden Hunza, Fairy Meadows, Naran. Group of 4+ saves 15%!',
-    expiresAt: new Date(now + 23 * 3600000)
-  },
-  {
-    name: 'October Explorer — Last Spots', destination: 'October Explorer Tour',
-    image: 'https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=600&q=80',
-    oldPrice: 100000, newPrice: 90000, badge: 'Best Seller',
-    description: '11-day October tour — Skardu, Khaplu, Fairy Meadows, Naltar, Naran. Limited spots remaining!',
-    expiresAt: new Date(now + 71 * 3600000)
-  }
-];
-
 const videos = [
   { title: 'Gilgit Adventure Treks', description: 'Discover the breathtaking landscapes of Northern Pakistan', tag: 'Cinematic', videoUrl: 'videos/Gilgit Adventure Treks-1.mp4', sortOrder: 1 },
   { title: 'Mountain Adventures', description: 'Real trekking experiences through the Karakoram', tag: 'Client Story', videoUrl: 'videos/Gilgit Adventure Treks-2.mp4', sortOrder: 2 },
@@ -712,7 +686,6 @@ async function seed() {
     await Promise.all([
       Destination.deleteMany({}),
       Review.deleteMany({}),
-      Deal.deleteMany({}),
       Admin.deleteMany({}),
       Video.deleteMany({}),
       GalleryImage.deleteMany({}),
@@ -726,9 +699,6 @@ async function seed() {
 
     await Review.insertMany(reviews);
     console.log(`Seeded ${reviews.length} reviews`);
-
-    await Deal.insertMany(deals);
-    console.log(`Seeded ${deals.length} deals`);
 
     await Video.insertMany(videos);
     console.log(`Seeded ${videos.length} videos`);

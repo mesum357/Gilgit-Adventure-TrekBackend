@@ -151,16 +151,15 @@ app.get('/api/public-data', async (req, res) => {
 
     await dbReady;
     const SiteSettings = require('./models/SiteSettings');
-    const [destinations, reviews, deals, videos, gallery, team, settings] = await Promise.all([
+    const [destinations, reviews, videos, gallery, team, settings] = await Promise.all([
       require('./models/Destination').find().sort({ id: 1 }).lean(),
       require('./models/Review').find({ $or: [{ status: 'approved' }, { status: { $exists: false } }] }).sort({ createdAt: -1 }).lean(),
-      require('./models/Deal').find().sort({ createdAt: -1 }).lean(),
       require('./models/Video').find().sort({ sortOrder: 1 }).lean(),
       require('./models/GalleryImage').find().sort({ sortOrder: 1 }).lean(),
       require('./models/TeamMember').find().sort({ sortOrder: 1 }).lean(),
       SiteSettings.getSettings()
     ]);
-    const result = { destinations, reviews, deals, videos, gallery, team, settings };
+    const result = { destinations, reviews, videos, gallery, team, settings };
 
     // Cache the result
     apiCache.data = result;
@@ -194,7 +193,6 @@ app.get('/api/page-data', async (req, res) => {
 
     if (need.includes('destinations')) queries.destinations = require('./models/Destination').find().sort({ id: 1 }).lean();
     if (need.includes('reviews')) queries.reviews = require('./models/Review').find({ $or: [{ status: 'approved' }, { status: { $exists: false } }] }).sort({ createdAt: -1 }).lean();
-    if (need.includes('deals')) queries.deals = require('./models/Deal').find().sort({ createdAt: -1 }).lean();
     if (need.includes('videos')) queries.videos = require('./models/Video').find().sort({ sortOrder: 1 }).lean();
     if (need.includes('gallery')) queries.gallery = require('./models/GalleryImage').find().sort({ sortOrder: 1 }).lean();
     if (need.includes('team')) queries.team = require('./models/TeamMember').find().sort({ sortOrder: 1 }).lean();
@@ -220,7 +218,6 @@ app.use('/api/users', require('./routes/userAuth'));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/destinations', require('./routes/destinations'));
 app.use('/api/reviews', require('./routes/reviews'));
-app.use('/api/deals', require('./routes/deals'));
 app.use('/api/bookings', require('./routes/bookings'));
 app.use('/api/subscribers', require('./routes/subscribers'));
 app.use('/api/contact', require('./routes/contact'));

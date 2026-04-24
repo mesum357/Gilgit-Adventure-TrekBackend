@@ -3,7 +3,6 @@ const router = express.Router();
 const connectDB = require('../config/db');
 const Destination = require('../models/Destination');
 const Review = require('../models/Review');
-const Deal = require('../models/Deal');
 const Video = require('../models/Video');
 const GalleryImage = require('../models/GalleryImage');
 const TeamMember = require('../models/TeamMember');

@@ -66,11 +66,6 @@ const siteSettingsSchema = new mongoose.Schema({
       title: { type: String, default: 'What Trekkers Say' },
       description: { type: String, default: 'Real experiences from real adventurers. See why thousands trust The Journey Team for their mountain journeys.' }
     },
-    deals: {
-      tag: { type: String, default: 'Limited Time' },
-      title: { type: String, default: 'Seasonal Trek Deals' },
-      description: { type: String, default: "Grab these exclusive Northern Pakistan tour packages before they're fully booked for the season." }
-    }
   },
 
   navigation: {
@@ -104,7 +99,7 @@ const siteSettingsSchema = new mongoose.Schema({
 
   newsletter: {
     heading: { type: String, default: 'Get Trek Updates & Seasonal Alerts' },
-    description: { type: String, default: 'Subscribe for exclusive Northern Pakistan trek deals, weather updates, and adventure guides delivered to your inbox.' },
+    description: { type: String, default: 'Subscribe for exclusive Northern Pakistan trek updates, weather alerts, and adventure guides delivered to your inbox.' },
     subscriberNote: { type: String, default: 'No spam, unsubscribe anytime. Join 12,000+ adventure seekers.' }
   },
 

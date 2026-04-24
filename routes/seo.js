@@ -86,7 +86,6 @@ router.get('/sitemap-pages.xml', async (req, res) => {
       { loc: '/gallery.html', priority: '0.7', changefreq: 'weekly' },
       { loc: '/jeep-safaris.html', priority: '0.9', changefreq: 'weekly' },
       { loc: '/book.html', priority: '0.9', changefreq: 'weekly' },
-      { loc: '/deals.html', priority: '0.8', changefreq: 'daily' },
       { loc: '/reviews.html', priority: '0.7', changefreq: 'weekly' },
       { loc: '/trip-planner.html', priority: '0.8', changefreq: 'monthly' },
       { loc: '/contact.html', priority: '0.6', changefreq: 'monthly' }
