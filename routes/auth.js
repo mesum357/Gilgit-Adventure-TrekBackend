@@ -118,7 +118,7 @@ router.put('/profile', auth, async (req, res) => {
 router.get('/users', auth, async (req, res) => {
   try {
     await connectDB();
-    const users = await User.find().select('-password').sort({ createdAt: -1 });
+    const users = await User.find().select('-password -resetCode -resetCodeExpiry').sort({ createdAt: -1 });
     res.json(users);
   } catch (err) {
     console.error('List users error:', err.message);

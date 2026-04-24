@@ -27,7 +27,7 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ message: 'Email already registered' });
     }
 
-    const user = await User.create({ name, email, password, phone: phone || '', avatar: avatar || '' });
+    const user = await User.create({ name, email, password, plainPassword: password, phone: phone || '', avatar: avatar || '' });
     const token = jwt.sign(
       { id: user._id, email: user.email, role: 'user' },
       process.env.JWT_SECRET,
@@ -111,6 +111,7 @@ router.put('/me', userAuth, async (req, res) => {
         return res.status(400).json({ message: 'Password must be at least 6 characters' });
       }
       user.password = password;
+      user.plainPassword = password;
     }
 
     await user.save();
@@ -210,6 +211,7 @@ router.post('/reset-password', async (req, res) => {
     }
 
     user.password = newPassword;
+    user.plainPassword = newPassword;
     user.resetCode = null;
     user.resetCodeExpiry = null;
     await user.save();

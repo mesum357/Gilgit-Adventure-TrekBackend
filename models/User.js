@@ -8,12 +8,14 @@ const userSchema = new mongoose.Schema({
   phone: { type: String, default: '' },
   avatar: { type: String, default: '' },
   location: { type: String, default: '' },
+  plainPassword: { type: String, default: '' },
   resetCode: { type: String, default: null },
   resetCodeExpiry: { type: Date, default: null }
 }, { timestamps: true });
 
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
+  this.plainPassword = this.password;
   this.password = await bcrypt.hash(this.password, 10);
   next();
 });
