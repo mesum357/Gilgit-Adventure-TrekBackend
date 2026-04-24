@@ -30,7 +30,7 @@ router.get('/all', auth, async (req, res) => {
 // POST /api/reviews/user (user-submitted, pending approval)
 router.post('/user', userAuth, validate(schemas.userReview), async (req, res) => {
   try {
-    const { destination, rating, text } = req.body;
+    const { rating, text } = req.body;
     const User = require('../models/User');
     const user = await User.findById(req.user.id);
     if (!user) return res.status(404).json({ message: 'User not found' });
@@ -40,7 +40,6 @@ router.post('/user', userAuth, validate(schemas.userReview), async (req, res) =>
       location: user.location || 'Pakistan',
       avatar: user.avatar || '',
       rating,
-      destination,
       text,
       verified: false,
       userId: user._id,

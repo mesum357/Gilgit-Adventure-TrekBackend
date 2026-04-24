@@ -42,7 +42,6 @@ const schemas = {
   }),
 
   userReview: Joi.object({
-    destination: Joi.string().trim().required(),
     rating: Joi.number().min(1).max(5).required(),
     text: Joi.string().trim().min(5).max(2000).required()
   })
