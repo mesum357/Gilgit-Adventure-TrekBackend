@@ -20,6 +20,7 @@ router.post('/', auth, async (req, res) => {
   try {
     await connectDB();
     const destination = await Destination.create(req.body);
+    if (req.app.locals.clearApiCache) req.app.locals.clearApiCache();
     res.status(201).json(destination);
   } catch (err) {
     console.error('Create destination error:', err.message);
@@ -37,6 +38,7 @@ router.put('/:id', auth, async (req, res) => {
       { new: true, runValidators: true }
     );
     if (!destination) return res.status(404).json({ message: 'Destination not found' });
+    if (req.app.locals.clearApiCache) req.app.locals.clearApiCache();
     res.json(destination);
   } catch (err) {
     console.error('Update destination error:', err.message);
@@ -50,6 +52,7 @@ router.delete('/:id', auth, async (req, res) => {
     await connectDB();
     const destination = await Destination.findOneAndDelete({ id: parseInt(req.params.id) });
     if (!destination) return res.status(404).json({ message: 'Destination not found' });
+    if (req.app.locals.clearApiCache) req.app.locals.clearApiCache();
     res.json({ message: 'Destination deleted' });
   } catch (err) {
     console.error('Delete destination error:', err.message);

@@ -14,8 +14,21 @@ const dbReady = connectDB();
 // Trust proxy for Vercel/serverless (required for rate limiting)
 app.set('trust proxy', 1);
 
-// Middleware
-app.use(cors());
+// Middleware — CORS (frontend is same-origin; this covers admin/external tools)
+const allowedOrigins = [
+  'https://gilgitadventuretreks.com',
+  'https://www.gilgitadventuretreks.com',
+  'http://localhost:3000',
+  'http://127.0.0.1:3000'
+];
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow same-origin requests (no origin header) and whitelisted origins
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) return callback(null, true);
+    callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true
+}));
 app.use(express.json({ limit: '5mb' }));
 
 // Rate limiters with proxy support
@@ -142,6 +155,15 @@ app.get('/api/health', async (req, res) => {
 
 // In-memory cache for API responses (2 min TTL)
 const apiCache = { data: null, timestamp: 0, ttl: 2 * 60 * 1000 };
+const pageCache = {};
+
+// Clear all caches — called by admin routes after any data change
+function clearApiCache() {
+  apiCache.data = null;
+  apiCache.timestamp = 0;
+  Object.keys(pageCache).forEach(k => delete pageCache[k]);
+}
+app.locals.clearApiCache = clearApiCache;
 
 // Combined public data endpoint — single request instead of 6 + site settings
 app.get('/api/public-data', async (req, res) => {
@@ -178,7 +200,6 @@ app.get('/api/public-data', async (req, res) => {
 });
 
 // Lightweight endpoint — only settings + specific collections (faster for subpages)
-const pageCache = {};
 app.get('/api/page-data', async (req, res) => {
   try {
     const need = (req.query.need || '').split(',').filter(Boolean);
@@ -271,7 +292,7 @@ app.use((req, res) => {
 </html>`);
 });
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 
 // Start server (needed for Render and local dev)
 app.listen(PORT, () => {

@@ -20,6 +20,7 @@ router.post('/', auth, async (req, res) => {
   try {
     await connectDB();
     const member = await TeamMember.create(req.body);
+    if (req.app.locals.clearApiCache) req.app.locals.clearApiCache();
     res.status(201).json(member);
   } catch (err) {
     console.error('Create team member error:', err.message);
@@ -33,6 +34,7 @@ router.put('/:id', auth, async (req, res) => {
     await connectDB();
     const member = await TeamMember.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
     if (!member) return res.status(404).json({ message: 'Team member not found' });
+    if (req.app.locals.clearApiCache) req.app.locals.clearApiCache();
     res.json(member);
   } catch (err) {
     console.error('Update team member error:', err.message);
@@ -46,6 +48,7 @@ router.delete('/:id', auth, async (req, res) => {
     await connectDB();
     const member = await TeamMember.findByIdAndDelete(req.params.id);
     if (!member) return res.status(404).json({ message: 'Team member not found' });
+    if (req.app.locals.clearApiCache) req.app.locals.clearApiCache();
     res.json({ message: 'Team member deleted' });
   } catch (err) {
     console.error('Delete team member error:', err.message);

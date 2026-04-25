@@ -20,6 +20,7 @@ router.post('/', auth, async (req, res) => {
   try {
     await connectDB();
     const image = await GalleryImage.create(req.body);
+    if (req.app.locals.clearApiCache) req.app.locals.clearApiCache();
     res.status(201).json(image);
   } catch (err) {
     console.error('Create gallery image error:', err.message);
@@ -33,6 +34,7 @@ router.put('/:id', auth, async (req, res) => {
     await connectDB();
     const image = await GalleryImage.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
     if (!image) return res.status(404).json({ message: 'Image not found' });
+    if (req.app.locals.clearApiCache) req.app.locals.clearApiCache();
     res.json(image);
   } catch (err) {
     console.error('Update gallery image error:', err.message);
@@ -46,6 +48,7 @@ router.delete('/:id', auth, async (req, res) => {
     await connectDB();
     const image = await GalleryImage.findByIdAndDelete(req.params.id);
     if (!image) return res.status(404).json({ message: 'Image not found' });
+    if (req.app.locals.clearApiCache) req.app.locals.clearApiCache();
     res.json({ message: 'Image deleted' });
   } catch (err) {
     console.error('Delete gallery image error:', err.message);
