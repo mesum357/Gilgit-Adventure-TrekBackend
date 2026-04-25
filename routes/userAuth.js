@@ -27,7 +27,7 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ message: 'Email already registered' });
     }
 
-    const user = await User.create({ name, email, password, plainPassword: password, phone: phone || '', avatar: avatar || '' });
+    const user = await User.create({ name, email, password, phone: phone || '', avatar: avatar || '' });
     const token = jwt.sign(
       { id: user._id, email: user.email, role: 'user' },
       process.env.JWT_SECRET,
@@ -77,7 +77,7 @@ router.post('/login', async (req, res) => {
     res.json({ token, name: user.name, email: user.email, avatar: user.avatar || '' });
   } catch (err) {
     console.error('User login error:', err.message);
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
@@ -85,7 +85,7 @@ router.post('/login', async (req, res) => {
 router.get('/me', userAuth, async (req, res) => {
   try {
     await connectDB();
-    const user = await User.findById(req.user.id).select('-password');
+    const user = await User.findById(req.user.id).select('-password -plainPassword -resetCode -resetCodeExpiry');
     if (!user) return res.status(404).json({ message: 'User not found' });
     res.json(user);
   } catch (err) {
@@ -111,7 +111,6 @@ router.put('/me', userAuth, async (req, res) => {
         return res.status(400).json({ message: 'Password must be at least 6 characters' });
       }
       user.password = password;
-      user.plainPassword = password;
     }
 
     await user.save();
@@ -211,7 +210,6 @@ router.post('/reset-password', async (req, res) => {
     }
 
     user.password = newPassword;
-    user.plainPassword = newPassword;
     user.resetCode = null;
     user.resetCodeExpiry = null;
     await user.save();

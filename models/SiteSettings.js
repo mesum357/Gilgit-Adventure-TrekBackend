@@ -3,106 +3,6 @@ const mongoose = require('mongoose');
 const siteSettingsSchema = new mongoose.Schema({
   _singleton: { type: String, default: 'site-settings', unique: true },
 
-  branding: {
-    logoUrl: { type: String, default: 'images/logo.png' },
-    logoSize: { type: Number, default: 44 },
-    logoBorderRadius: { type: Number, default: 50 },
-    companyName: { type: String, default: 'Gilgit Adventure Treks' },
-    companyShortName: { type: String, default: 'The Journey Team' },
-    faviconUrl: { type: String, default: 'images/logo.png' },
-    faviconBorderRadius: { type: Number, default: 50 }
-  },
-
-  hero: {
-    slides: [{ imageUrl: String, alt: String }],
-    subtitle: { type: String, default: "Pakistan's Premier Adventure Company" },
-    title: { type: String, default: "Pakistan's Best Treks, Tours &<br>Mountain Adventures" },
-    description: { type: String, default: "From the magical Fairy Meadows to the mighty K2 Base Camp — experience the world's most spectacular mountain landscapes with expert local guides." }
-  },
-
-  sectionHeaders: {
-    gallery: {
-      tag: { type: String, default: 'Captured Moments' },
-      title: { type: String, default: 'Northern Gallery' },
-      description: { type: String, default: 'Stunning shots from trekkers who explored the mountains, valleys, and lakes of Northern Pakistan with us.' }
-    },
-    videos: {
-      tag: { type: String, default: 'Watch & Explore' },
-      title: { type: String, default: 'Experience Northern Pakistan' },
-      description: { type: String, default: "Watch real adventures from our trekkers and cinematic views of the world's most dramatic mountain landscapes." }
-    },
-    team: {
-      tag: { type: String, default: 'Meet Us' },
-      title: { type: String, default: 'The Journey Team' },
-      description: { type: String, default: 'Local experts, seasoned mountaineers, and passionate storytellers — the people who make your Northern Pakistan adventure unforgettable.' }
-    },
-    topDestinations: {
-      tag: { type: String, default: 'Our Top Picks' },
-      title: { type: String, default: 'Top Destinations' },
-      description: { type: String, default: 'Handpicked by our team — the four most breathtaking experiences Northern Pakistan has to offer.' }
-    },
-    destinations: {
-      tag: { type: String, default: 'Northern Pakistan' },
-      title: { type: String, default: 'Iconic Destinations' },
-      description: { type: String, default: 'Discover Gilgit-Baltistan, Chitral, and beyond — handpicked valleys, peaks, and treks that define the roof of the world.' }
-    },
-    map: {
-      tag: { type: String, default: 'Discover' },
-      title: { type: String, default: 'Explore Northern Pakistan' },
-      description: { type: String, default: 'Click on any destination hotspot to learn more and start planning your adventure.' }
-    },
-    tripPlanner: {
-      tag: { type: String, default: 'AI-Powered' },
-      title: { type: String, default: 'Smart Trek Planner' },
-      description: { type: String, default: 'Tell us your preferences and our AI will craft the perfect Northern Pakistan itinerary just for you.' }
-    },
-    booking: {
-      tag: { type: String, default: 'Easy Booking' },
-      title: { type: String, default: 'Book Your Adventure' },
-      description: { type: String, default: 'Simple, transparent booking in just a few steps. No hidden fees — honest pricing from a local company.' }
-    },
-    reviews: {
-      tag: { type: String, default: 'Testimonials' },
-      title: { type: String, default: 'What Trekkers Say' },
-      description: { type: String, default: 'Real experiences from real adventurers. See why thousands trust The Journey Team for their mountain journeys.' }
-    },
-  },
-
-  navigation: {
-    links: [{
-      label: String,
-      href: String,
-      isCta: { type: Boolean, default: false }
-    }]
-  },
-
-  filterCategories: [{
-    label: String,
-    value: String
-  }],
-
-  footer: {
-    description: { type: String, default: "Pakistan's trusted adventure company since 2018. Specializing in treks, tours, and cultural expeditions across Gilgit-Baltistan, Skardu, and the Karakoram." },
-    socialLinks: [{
-      platform: String,
-      url: String
-    }],
-    trustBadges: [{
-      text: String
-    }],
-    copyrightText: { type: String, default: '© 2026 The Journey Team. All rights reserved. Based in Gilgit, Pakistan.' },
-    linkColumns: [{
-      heading: String,
-      links: [{ label: String, href: String }]
-    }]
-  },
-
-  newsletter: {
-    heading: { type: String, default: 'Get Trek Updates & Seasonal Alerts' },
-    description: { type: String, default: 'Subscribe for exclusive Northern Pakistan trek updates, weather alerts, and adventure guides delivered to your inbox.' },
-    subscriberNote: { type: String, default: 'No spam, unsubscribe anytime. Join 12,000+ adventure seekers.' }
-  },
-
   contact: {
     whatsappNumber: { type: String, default: '+923465001043' },
     whatsappUrl: { type: String, default: 'https://wa.me/923465001043' },
@@ -121,11 +21,6 @@ const siteSettingsSchema = new mongoose.Schema({
     welcomeMessage: { type: String, default: "Assalam o Alaikum! I'm your AI trek planning assistant for Northern Pakistan. Set your preferences on the left and click <strong>Generate My Trek</strong> to get a personalized itinerary through Gilgit-Baltistan!" },
     aiResponses: { type: mongoose.Schema.Types.Mixed, default: {} },
     chatResponses: { type: mongoose.Schema.Types.Mixed, default: {} }
-  },
-
-  loadingScreen: {
-    title: { type: String, default: 'Gilgit Adventure Treks' },
-    text: { type: String, default: 'Preparing your mountain adventure...' }
   },
 
   seo: {

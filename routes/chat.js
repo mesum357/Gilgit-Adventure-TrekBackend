@@ -42,6 +42,7 @@ User: "I want something challenging" → "Our Summer Trekking & Tour is 12 days 
 User: "do you have easy tours?" → "Yes! The Fairy Meadows Safari (6 days), Deosai Plains Safari (7 days), Khunjerab Pass Safari (7 days), Blossom Jeep Safari (10 days), Autumn Colors Tour (11 days), and October Explorer (11 days) are all rated Easy or Moderate. Contact us on WhatsApp for pricing!"`;
 
 const chatHistory = new Map();
+const MAX_CHAT_SESSIONS = 500;
 
 function getChatId(req) {
   return req.ip || 'default';
@@ -86,6 +87,11 @@ router.post('/', async (req, res) => {
   try {
     const chatId = getChatId(req);
     if (!chatHistory.has(chatId)) {
+      // Evict oldest session if at capacity
+      if (chatHistory.size >= MAX_CHAT_SESSIONS) {
+        const oldest = chatHistory.keys().next().value;
+        chatHistory.delete(oldest);
+      }
       chatHistory.set(chatId, []);
     }
     const history = chatHistory.get(chatId);

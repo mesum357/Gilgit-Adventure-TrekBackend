@@ -88,10 +88,10 @@ app.use((req, res, next) => {
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=()');
   res.setHeader('X-DNS-Prefetch-Control', 'on');
-  // Cache static assets (disabled in dev, enable for production)
+  // Cache static assets
   const url = req.url;
   if (url.match(/\.(css|js|jpg|jpeg|png|gif|webp|svg|ico|woff2?)$/i)) {
-    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate'); // dev mode
+    res.setHeader('Cache-Control', 'public, max-age=86400'); // 1 day
   }
   next();
 });
@@ -259,6 +259,13 @@ app.use('/api/ai', require('./routes/ai'));
 // Seed route (for initial database setup on Vercel)
 app.use('/api', require('./routes/seed'));
 
+// Global error-handling middleware (must have 4 params)
+app.use((err, req, res, next) => {
+  console.error('Unhandled error:', err.message);
+  if (res.headersSent) return next(err);
+  res.status(500).json({ message: 'Internal server error' });
+});
+
 // 404 handler — SEO-friendly error page
 app.use((req, res) => {
   res.status(404).send(`<!DOCTYPE html>
@@ -293,6 +300,16 @@ app.use((req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
+
+// Prevent crashes from unhandled promise rejections and exceptions
+process.on('unhandledRejection', (reason) => {
+  console.error('Unhandled Rejection:', reason);
+});
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err.message);
+  // Give time to log, then exit — PM2 will restart
+  setTimeout(() => process.exit(1), 1000);
+});
 
 // Start server (needed for Render and local dev)
 app.listen(PORT, () => {

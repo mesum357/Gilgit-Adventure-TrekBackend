@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const auth = require('../middleware/auth');
 const connectDB = require('../config/db');
 const Destination = require('../models/Destination');
 const Review = require('../models/Review');
@@ -49,23 +50,16 @@ const teamMembers = [
   { name: 'Zara Batool', role: 'Community & Marketing Lead', bio: 'Skardu local passionate about responsible tourism. Connects travelers with authentic cultural experiences across Baltistan.', image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80', facebook: '#', instagram: '#', sortOrder: 4 }
 ];
 
-// Seed admin account (safe to run multiple times) - GET and POST
+// Seed admin account — only works when NO admin exists (first-time setup)
 const seedAdminHandler = async (req, res) => {
   try {
-    // CRITICAL: Wait for DB connection first (Vercel serverless fix)
     await connectDB();
 
-    // Check if admin already exists
     const existingAdmin = await Admin.findOne({ username: 'admin' });
-
     if (existingAdmin) {
-      return res.json({
-        message: 'Admin account already exists',
-        username: 'admin'
-      });
+      return res.status(403).json({ message: 'Admin account already exists. Use admin dashboard to manage.' });
     }
 
-    // Create default admin
     const admin = new Admin({
       username: 'admin',
       password: process.env.ADMIN_DEFAULT_PASSWORD || 'admin123'
@@ -76,81 +70,43 @@ const seedAdminHandler = async (req, res) => {
     res.json({
       success: true,
       message: 'Admin account created successfully',
-      username: 'admin',
-      password: 'Use ADMIN_DEFAULT_PASSWORD from environment variables'
+      username: 'admin'
     });
   } catch (err) {
     console.error('Admin seed error:', err);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: 'Seed failed' });
   }
 };
 
 router.get('/seed-admin', seedAdminHandler);
 router.post('/seed-admin', seedAdminHandler);
 
-// Reset admin password (useful if password gets corrupted)
-router.get('/reset-admin-password', async (req, res) => {
+// Reset admin password — requires admin auth
+router.get('/reset-admin-password', auth, async (req, res) => {
   try {
-    // CRITICAL: Wait for DB connection first (Vercel serverless fix)
     await connectDB();
 
     const admin = await Admin.findOne({ username: 'admin' });
     if (!admin) {
-      return res.json({ error: 'Admin account not found. Run /api/seed-admin first' });
+      return res.status(404).json({ error: 'Admin account not found' });
     }
 
-    // Reset to default password
     admin.password = process.env.ADMIN_DEFAULT_PASSWORD || 'admin123';
     await admin.save();
 
     res.json({
       success: true,
-      message: 'Admin password reset to default',
-      username: 'admin',
-      password: 'Check ADMIN_DEFAULT_PASSWORD environment variable'
+      message: 'Admin password reset to default'
     });
   } catch (err) {
     console.error('Password reset error:', err);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: 'Reset failed' });
   }
 });
 
-// Reset loading screen to default (fix corrupted loading screen text)
-router.get('/reset-loading-screen', async (req, res) => {
+// Seed only gallery and videos — requires admin auth
+router.post('/seed-media', auth, async (req, res) => {
   try {
-    // CRITICAL: Wait for DB connection first (Vercel serverless fix)
-    await connectDB();
-
-    const SiteSettings = require('../models/SiteSettings');
-    const settings = await SiteSettings.getSettings();
-
-    if (!settings) {
-      return res.json({ error: 'Site settings not found' });
-    }
-
-    // Reset loading screen to defaults
-    settings.loadingScreen = {
-      title: 'Gilgit Adventure Treks',
-      text: 'Preparing your mountain adventure...'
-    };
-
-    await settings.save();
-
-    res.json({
-      success: true,
-      message: 'Loading screen reset to default',
-      loadingScreen: settings.loadingScreen
-    });
-  } catch (err) {
-    console.error('Loading screen reset error:', err);
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// Seed only gallery and videos (safe to run multiple times)
-router.post('/seed-media', async (req, res) => {
-  try {
-    // CRITICAL: Wait for DB connection first (Vercel serverless fix)
     await connectDB();
 
     // Check if already seeded
@@ -191,7 +147,7 @@ router.post('/seed-media', async (req, res) => {
     });
   } catch (err) {
     console.error('Seed error:', err);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: 'Seed failed' });
   }
 });
 

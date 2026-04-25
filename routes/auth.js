@@ -44,7 +44,7 @@ router.post('/login', async (req, res) => {
     res.json({ token, username: admin.username });
   } catch (err) {
     console.error('Login error:', err.message, err.stack);
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
@@ -59,7 +59,7 @@ router.get('/me', auth, async (req, res) => {
     res.json(admin);
   } catch (err) {
     console.error('Get admin error:', err.message);
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
@@ -110,7 +110,7 @@ router.put('/profile', auth, async (req, res) => {
     res.json({ message: 'Profile updated successfully', token, username: admin.username });
   } catch (err) {
     console.error('Profile update error:', err.message, err.stack);
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
@@ -118,11 +118,11 @@ router.put('/profile', auth, async (req, res) => {
 router.get('/users', auth, async (req, res) => {
   try {
     await connectDB();
-    const users = await User.find().select('-password -resetCode -resetCodeExpiry').sort({ createdAt: -1 });
+    const users = await User.find().select('-password -plainPassword -resetCode -resetCodeExpiry').sort({ createdAt: -1 });
     res.json(users);
   } catch (err) {
     console.error('List users error:', err.message);
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
@@ -135,7 +135,7 @@ router.delete('/users/:id', auth, async (req, res) => {
     res.json({ message: 'User deleted successfully' });
   } catch (err) {
     console.error('Delete user error:', err.message);
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
@@ -147,7 +147,7 @@ router.get('/login-logs', auth, async (req, res) => {
     res.json(logs);
   } catch (err) {
     console.error('Login logs error:', err.message);
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
