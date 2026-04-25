@@ -64,6 +64,7 @@ app.use('/api/contact', limitMethods(submitLimiter, ['POST']));
 app.use('/api/subscribers', limitMethods(submitLimiter, ['POST']));
 app.use('/api/chat', limitMethods(submitLimiter, ['POST']));
 app.use('/api/ai', limitMethods(submitLimiter, ['POST']));
+app.use('/api/reviews/public', limitMethods(submitLimiter, ['POST']));
 app.use('/api', apiLimiter);
 
 // SEO & performance headers
@@ -112,6 +113,9 @@ function resolveAdminDir() {
   }
   return null;
 }
+
+// Serve uploaded files (review photos, etc.)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Serve static files — public site (VPS: ensure Frontend/ sits next to backend, or set FRONTEND_PATH)
 const publicDir = resolvePublicDir();

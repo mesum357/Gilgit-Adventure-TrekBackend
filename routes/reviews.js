@@ -1,8 +1,40 @@
 const router = require('express').Router();
+const path = require('path');
+const fs = require('fs');
+const multer = require('multer');
 const Review = require('../models/Review');
 const auth = require('../middleware/auth');
-const userAuth = require('../middleware/userAuth');
 const { validate, schemas } = require('../middleware/validate');
+
+// Ensure uploads directory exists
+const uploadsDir = path.join(__dirname, '..', 'uploads', 'reviews');
+fs.mkdirSync(uploadsDir, { recursive: true });
+
+// Multer config for photo uploads
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadsDir);
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const ext = path.extname(file.originalname).toLowerCase();
+    cb(null, uniqueSuffix + ext);
+  }
+});
+
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+  fileFilter: function (req, file, cb) {
+    const allowed = ['.jpeg', '.jpg', '.png', '.webp'];
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (allowed.includes(ext)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only JPEG, PNG, and WebP images are allowed'));
+    }
+  }
+});
 
 // GET /api/reviews (public — approved + legacy only)
 router.get('/', async (req, res) => {
@@ -27,22 +59,26 @@ router.get('/all', auth, async (req, res) => {
   }
 });
 
-// POST /api/reviews/user (user-submitted, pending approval)
-router.post('/user', userAuth, validate(schemas.userReview), async (req, res) => {
+// POST /api/reviews/public (public — no auth, pending approval)
+router.post('/public', function (req, res, next) {
+  upload.single('photo')(req, res, function (err) {
+    if (err) {
+      if (err.code === 'LIMIT_FILE_SIZE') return res.status(400).json({ message: 'Photo must be under 5MB' });
+      return res.status(400).json({ message: err.message });
+    }
+    next();
+  });
+}, validate(schemas.publicReview), async (req, res) => {
   try {
-    const { rating, text } = req.body;
-    const User = require('../models/User');
-    const user = await User.findById(req.user.id);
-    if (!user) return res.status(404).json({ message: 'User not found' });
+    const { name, rating, text, avatarUrl } = req.body;
+    const avatar = req.file ? '/uploads/reviews/' + req.file.filename : (avatarUrl || '');
 
     const review = await Review.create({
-      name: user.name,
-      location: user.location || 'Pakistan',
-      avatar: user.avatar || '',
+      name,
       rating,
       text,
+      avatar,
       verified: false,
-      userId: user._id,
       status: 'pending'
     });
     res.status(201).json(review);

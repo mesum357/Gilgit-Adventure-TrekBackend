@@ -2,11 +2,12 @@ const Joi = require('joi');
 
 function validate(schema) {
   return (req, res, next) => {
-    const { error } = schema.validate(req.body, { abortEarly: false, stripUnknown: true });
+    const { error, value } = schema.validate(req.body, { abortEarly: false, stripUnknown: true });
     if (error) {
       const messages = error.details.map(d => d.message).join(', ');
       return res.status(400).json({ message: messages });
     }
+    req.body = value;
     next();
   };
 }
@@ -41,9 +42,11 @@ const schemas = {
     name: Joi.string().trim().max(100).allow('')
   }),
 
-  userReview: Joi.object({
+  publicReview: Joi.object({
+    name: Joi.string().trim().min(2).max(100).required(),
     rating: Joi.number().min(1).max(5).required(),
-    text: Joi.string().trim().min(5).max(2000).required()
+    text: Joi.string().trim().min(5).max(2000).required(),
+    avatarUrl: Joi.string().trim().uri().allow('').default('')
   })
 };
 
