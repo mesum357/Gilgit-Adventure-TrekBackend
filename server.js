@@ -135,6 +135,45 @@ const publicDir = resolvePublicDir();
 if (publicDir === __dirname) {
   console.warn('Frontend not found: use ../Frontend, ../Gilgit-Adventure-TrekFrontend, or set FRONTEND_PATH in backend .env');
 }
+
+// Serve index.html with embedded API data — eliminates the fetch round-trip
+app.get(['/', '/index.html'], async (req, res) => {
+  try {
+    // Read and cache the HTML file
+    if (!indexHtmlCache) {
+      indexHtmlCache = fs.readFileSync(path.join(publicDir, 'index.html'), 'utf8');
+    }
+
+    // Get API data from cache or DB
+    let data = apiCache.data;
+    if (!data || (Date.now() - apiCache.timestamp) >= apiCache.ttl) {
+      await dbReady;
+      const [destinations, reviews, videos, gallery, team, settings] = await Promise.all([
+        require('./models/Destination').find().sort({ id: 1 }).lean(),
+        require('./models/Review').find({ $or: [{ status: 'approved' }, { status: { $exists: false } }] }).sort({ createdAt: -1 }).lean(),
+        require('./models/Video').find().sort({ sortOrder: 1 }).lean(),
+        require('./models/GalleryImage').find().sort({ sortOrder: 1 }).lean(),
+        require('./models/TeamMember').find().sort({ sortOrder: 1 }).lean(),
+        require('./models/SiteSettings').getSettings()
+      ]);
+      data = { destinations, reviews, videos, gallery, team, settings };
+      apiCache.data = data;
+      apiCache.timestamp = Date.now();
+    }
+
+    // Inject data into HTML before </head>
+    const injection = '<script>window.__inlineData=' + JSON.stringify(data) + '</script>';
+    const html = indexHtmlCache.replace('</head>', injection + '\n</head>');
+
+    res.setHeader('Content-Type', 'text/html');
+    res.setHeader('Cache-Control', 'public, max-age=60');
+    res.send(html);
+  } catch (err) {
+    // Fallback to static file if injection fails
+    res.sendFile(path.join(publicDir, 'index.html'));
+  }
+});
+
 app.use(express.static(publicDir));
 
 const adminDir = resolveAdminDir();
@@ -156,11 +195,13 @@ app.get('/api/health', async (req, res) => {
 // In-memory cache for API responses (2 min TTL)
 const apiCache = { data: null, timestamp: 0, ttl: 2 * 60 * 1000 };
 const pageCache = {};
+let indexHtmlCache = null;
 
 // Clear all caches — called by admin routes after any data change
 function clearApiCache() {
   apiCache.data = null;
   apiCache.timestamp = 0;
+  indexHtmlCache = null;
   Object.keys(pageCache).forEach(k => delete pageCache[k]);
 }
 app.locals.clearApiCache = clearApiCache;
