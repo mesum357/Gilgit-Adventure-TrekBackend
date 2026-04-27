@@ -108,7 +108,7 @@ Keep the response well-structured (use ** for bold headings), informative, and e
     res.json({ plan: text });
   } catch (err) {
     console.error('AI plan generation error:', err.message);
-    res.status(500).json({ message: 'Failed to generate plan', error: err.message });
+    res.status(500).json({ message: 'Failed to generate plan' });
   }
 });
 
@@ -152,7 +152,7 @@ Keep responses concise (2-3 sentences), friendly, and helpful. NEVER mention any
     res.json({ reply: text });
   } catch (err) {
     console.error('AI chat error:', err.message);
-    res.status(500).json({ message: 'Failed to get response', error: err.message });
+    res.status(500).json({ message: 'Failed to get response' });
   }
 });
 

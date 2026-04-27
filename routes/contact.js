@@ -30,7 +30,7 @@ router.post('/', validate(schemas.contact), async (req, res) => {
     res.status(201).json({ message: 'Message sent successfully', id: msg._id });
   } catch (err) {
     console.error('Contact form error:', err.message);
-    res.status(500).json({ message: 'Failed to send message', error: err.message });
+    res.status(500).json({ message: 'Failed to send message', error: 'Internal error' });
   }
 });
 
@@ -42,7 +42,7 @@ router.get('/', auth, async (req, res) => {
     res.json(messages);
   } catch (err) {
     console.error('Get messages error:', err.message);
-    res.status(500).json({ message: 'Failed to load messages', error: err.message });
+    res.status(500).json({ message: 'Failed to load messages', error: 'Internal error' });
   }
 });
 
@@ -55,7 +55,7 @@ router.put('/:id', auth, async (req, res) => {
     res.json(msg);
   } catch (err) {
     console.error('Update message error:', err.message);
-    res.status(500).json({ message: 'Failed to update message', error: err.message });
+    res.status(500).json({ message: 'Failed to update message', error: 'Internal error' });
   }
 });
 
@@ -68,7 +68,7 @@ router.delete('/:id', auth, async (req, res) => {
     res.json({ message: 'Deleted successfully' });
   } catch (err) {
     console.error('Delete message error:', err.message);
-    res.status(500).json({ message: 'Failed to delete message', error: err.message });
+    res.status(500).json({ message: 'Failed to delete message', error: 'Internal error' });
   }
 });
 

@@ -36,7 +36,7 @@ router.post('/login', async (req, res) => {
     LoginLog.create({ userType: 'admin', username, ip, userAgent, success: true }).catch(() => {});
 
     const token = jwt.sign(
-      { id: admin._id, username: admin.username },
+      { id: admin._id, username: admin.username, role: 'admin' },
       process.env.JWT_SECRET,
       { expiresIn: '24h' }
     );
@@ -102,7 +102,7 @@ router.put('/profile', auth, async (req, res) => {
 
     // Issue new token with updated username
     const token = jwt.sign(
-      { id: admin._id, username: admin.username },
+      { id: admin._id, username: admin.username, role: 'admin' },
       process.env.JWT_SECRET,
       { expiresIn: '24h' }
     );

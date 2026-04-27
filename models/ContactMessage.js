@@ -9,4 +9,7 @@ const contactMessageSchema = new mongoose.Schema({
   status: { type: String, enum: ['unread', 'read', 'replied'], default: 'unread' }
 }, { timestamps: true });
 
+contactMessageSchema.index({ createdAt: -1 });
+contactMessageSchema.index({ status: 1 });
+
 module.exports = mongoose.model('ContactMessage', contactMessageSchema);

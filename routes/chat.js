@@ -66,10 +66,10 @@ router.get('/test', async (req, res) => {
       })
     });
     const data = await resp.json();
-    if (!resp.ok) return res.json({ status: 'FAIL', reason: 'API error', details: data });
+    if (!resp.ok) return res.json({ status: 'FAIL', reason: 'AI service error' });
     res.json({ status: 'OK', reply: data.choices?.[0]?.message?.content });
   } catch (err) {
-    res.json({ status: 'FAIL', reason: err.message });
+    res.json({ status: 'FAIL', reason: 'AI unavailable' });
   }
 });
 

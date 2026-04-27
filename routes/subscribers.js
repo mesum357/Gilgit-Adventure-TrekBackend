@@ -40,7 +40,7 @@ router.post('/', validate(schemas.subscriber), async (req, res) => {
     res.status(201).json({ ...subscriber.toObject(), emailSent });
   } catch (err) {
     console.error('Subscribe error:', err.message);
-    res.status(400).json({ message: err.message });
+    res.status(400).json({ message: 'Subscription failed' });
   }
 });
 
@@ -52,7 +52,7 @@ router.get('/', auth, async (req, res) => {
     res.json(subscribers);
   } catch (err) {
     console.error('Get subscribers error:', err.message);
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({ message: 'Server error', error: 'Internal error' });
   }
 });
 
@@ -65,7 +65,7 @@ router.delete('/:id', auth, async (req, res) => {
     res.json({ message: 'Subscriber deleted' });
   } catch (err) {
     console.error('Delete subscriber error:', err.message);
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({ message: 'Server error', error: 'Internal error' });
   }
 });
 

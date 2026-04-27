@@ -55,7 +55,7 @@ router.get('/all', auth, async (req, res) => {
     res.json(reviews);
   } catch (err) {
     console.error('Get reviews error:', err.message);
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
@@ -64,7 +64,7 @@ router.post('/public', function (req, res, next) {
   upload.single('photo')(req, res, function (err) {
     if (err) {
       if (err.code === 'LIMIT_FILE_SIZE') return res.status(400).json({ message: 'Photo must be under 5MB' });
-      return res.status(400).json({ message: err.message });
+      return res.status(400).json({ message: 'Invalid file upload' });
     }
     next();
   });
@@ -83,7 +83,7 @@ router.post('/public', function (req, res, next) {
     });
     res.status(201).json(review);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(400).json({ message: 'Failed to submit review' });
   }
 });
 
@@ -94,7 +94,7 @@ router.post('/', auth, async (req, res) => {
     if (req.app.locals.clearApiCache) req.app.locals.clearApiCache();
     res.status(201).json(review);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(400).json({ message: 'Failed to create review' });
   }
 });
 
@@ -106,7 +106,7 @@ router.put('/:id', auth, async (req, res) => {
     if (req.app.locals.clearApiCache) req.app.locals.clearApiCache();
     res.json(review);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(400).json({ message: 'Failed to update review' });
   }
 });
 

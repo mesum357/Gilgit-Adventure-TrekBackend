@@ -1,6 +1,8 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const compression = require('compression');
+const helmet = require('helmet');
 const path = require('path');
 const fs = require('fs');
 const rateLimit = require('express-rate-limit');
@@ -30,6 +32,16 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json({ limit: '5mb' }));
+
+// Gzip compression for all responses
+app.use(compression());
+
+// Security headers via helmet
+app.use(helmet({
+  contentSecurityPolicy: false, // Disabled — inline scripts and external resources are used
+  crossOriginEmbedderPolicy: false, // Allows loading cross-origin images/videos
+  hsts: { maxAge: 31536000, includeSubDomains: true } // 1 year HSTS
+}));
 
 // Rate limiters with proxy support
 const authLimiter = rateLimit({
@@ -80,17 +92,10 @@ app.use('/api/ai', limitMethods(submitLimiter, ['POST']));
 app.use('/api/reviews/public', limitMethods(submitLimiter, ['POST']));
 app.use('/api', apiLimiter);
 
-// SEO & performance headers
+// Static asset caching (helmet already handles security headers)
 app.use((req, res, next) => {
-  // Security headers (also good for SEO trust signals)
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
-  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-  res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=()');
-  res.setHeader('X-DNS-Prefetch-Control', 'on');
-  // Cache static assets
   const url = req.url;
-  if (url.match(/\.(css|js|jpg|jpeg|png|gif|webp|svg|ico|woff2?)$/i)) {
+  if (url.match(/\.(css|js|jpg|jpeg|png|gif|webp|svg|ico|woff2?|mp4)$/i)) {
     res.setHeader('Cache-Control', 'public, max-age=86400'); // 1 day
   }
   next();
@@ -162,7 +167,9 @@ app.get(['/', '/index.html'], async (req, res) => {
     }
 
     // Inject data into HTML before </head>
-    const injection = '<script>window.__inlineData=' + JSON.stringify(data) + '</script>';
+    // Escape </script> and <!-- to prevent XSS via database content
+    const safeJson = JSON.stringify(data).replace(/</g, '\\u003c').replace(/>/g, '\\u003e');
+    const injection = '<script>window.__inlineData=' + safeJson + '</script>';
     const html = indexHtmlCache.replace('</head>', injection + '\n</head>');
 
     res.setHeader('Content-Type', 'text/html');

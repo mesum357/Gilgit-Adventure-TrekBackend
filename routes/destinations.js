@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
     res.json(destinations);
   } catch (err) {
     console.error('Get destinations error:', err.message);
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({ message: 'Server error', error: 'Internal error' });
   }
 });
 
@@ -24,7 +24,7 @@ router.post('/', auth, async (req, res) => {
     res.status(201).json(destination);
   } catch (err) {
     console.error('Create destination error:', err.message);
-    res.status(400).json({ message: err.message });
+    res.status(400).json({ message: 'Failed to create destination' });
   }
 });
 
@@ -42,7 +42,7 @@ router.put('/:id', auth, async (req, res) => {
     res.json(destination);
   } catch (err) {
     console.error('Update destination error:', err.message);
-    res.status(400).json({ message: err.message });
+    res.status(400).json({ message: 'Failed to update destination' });
   }
 });
 
@@ -56,7 +56,7 @@ router.delete('/:id', auth, async (req, res) => {
     res.json({ message: 'Destination deleted' });
   } catch (err) {
     console.error('Delete destination error:', err.message);
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({ message: 'Server error', error: 'Internal error' });
   }
 });
 

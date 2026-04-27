@@ -37,7 +37,7 @@ router.post('/register', async (req, res) => {
     res.status(201).json({ token, name: user.name, email: user.email, avatar: user.avatar });
   } catch (err) {
     console.error('User register error:', err.message);
-    res.status(400).json({ message: err.message });
+    res.status(400).json({ message: 'Registration failed' });
   }
 });
 
@@ -90,7 +90,7 @@ router.get('/me', userAuth, async (req, res) => {
     res.json(user);
   } catch (err) {
     console.error('Get user error:', err.message);
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
@@ -119,7 +119,7 @@ router.put('/me', userAuth, async (req, res) => {
     res.json(safeUser);
   } catch (err) {
     console.error('Update user error:', err.message);
-    res.status(400).json({ message: err.message });
+    res.status(400).json({ message: 'Update failed' });
   }
 });
 
@@ -131,7 +131,7 @@ router.get('/my-bookings', userAuth, async (req, res) => {
     res.json(bookings);
   } catch (err) {
     console.error('Get user bookings error:', err.message);
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
@@ -143,7 +143,7 @@ router.get('/my-reviews', userAuth, async (req, res) => {
     res.json(reviews);
   } catch (err) {
     console.error('Get user reviews error:', err.message);
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({ message: 'Server error' });
   }
 });
 

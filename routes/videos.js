@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
     res.json(videos);
   } catch (err) {
     console.error('Get videos error:', err.message);
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({ message: 'Server error', error: 'Internal error' });
   }
 });
 
@@ -24,7 +24,7 @@ router.post('/', auth, async (req, res) => {
     res.status(201).json(video);
   } catch (err) {
     console.error('Create video error:', err.message);
-    res.status(400).json({ message: err.message });
+    res.status(400).json({ message: 'Failed to create video' });
   }
 });
 
@@ -38,7 +38,7 @@ router.put('/:id', auth, async (req, res) => {
     res.json(video);
   } catch (err) {
     console.error('Update video error:', err.message);
-    res.status(400).json({ message: err.message });
+    res.status(400).json({ message: 'Failed to update video' });
   }
 });
 
@@ -52,7 +52,7 @@ router.delete('/:id', auth, async (req, res) => {
     res.json({ message: 'Video deleted' });
   } catch (err) {
     console.error('Delete video error:', err.message);
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({ message: 'Server error', error: 'Internal error' });
   }
 });
 

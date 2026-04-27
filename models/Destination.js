@@ -31,4 +31,6 @@ const destinationSchema = new mongoose.Schema({
   gallery: [String]
 }, { timestamps: true });
 
+destinationSchema.index({ category: 1, featured: 1 });
+
 module.exports = mongoose.model('Destination', destinationSchema);

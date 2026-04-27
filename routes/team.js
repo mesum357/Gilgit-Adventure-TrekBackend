@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
     res.json(members);
   } catch (err) {
     console.error('Get team error:', err.message);
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({ message: 'Server error', error: 'Internal error' });
   }
 });
 
@@ -24,7 +24,7 @@ router.post('/', auth, async (req, res) => {
     res.status(201).json(member);
   } catch (err) {
     console.error('Create team member error:', err.message);
-    res.status(400).json({ message: err.message });
+    res.status(400).json({ message: 'Failed to create team member' });
   }
 });
 
@@ -38,7 +38,7 @@ router.put('/:id', auth, async (req, res) => {
     res.json(member);
   } catch (err) {
     console.error('Update team member error:', err.message);
-    res.status(400).json({ message: err.message });
+    res.status(400).json({ message: 'Failed to update team member' });
   }
 });
 
@@ -52,7 +52,7 @@ router.delete('/:id', auth, async (req, res) => {
     res.json({ message: 'Team member deleted' });
   } catch (err) {
     console.error('Delete team member error:', err.message);
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({ message: 'Server error', error: 'Internal error' });
   }
 });
 

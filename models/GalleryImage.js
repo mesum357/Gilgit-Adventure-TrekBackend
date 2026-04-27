@@ -8,4 +8,6 @@ const galleryImageSchema = new mongoose.Schema({
   sortOrder: { type: Number, default: 0 }
 }, { timestamps: true });
 
+galleryImageSchema.index({ sortOrder: 1 });
+
 module.exports = mongoose.model('GalleryImage', galleryImageSchema);

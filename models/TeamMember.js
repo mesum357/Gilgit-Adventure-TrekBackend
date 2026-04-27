@@ -10,4 +10,6 @@ const teamMemberSchema = new mongoose.Schema({
   sortOrder: { type: Number, default: 0 }
 }, { timestamps: true });
 
+teamMemberSchema.index({ sortOrder: 1 });
+
 module.exports = mongoose.model('TeamMember', teamMemberSchema);

@@ -35,7 +35,7 @@ router.post('/', optionalUserAuth, validate(schemas.booking), async (req, res) =
 
     res.status(201).json({ ...booking.toObject(), emailSent });
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(400).json({ message: 'Failed to create booking' });
   }
 });
 
@@ -46,7 +46,7 @@ router.get('/', auth, async (req, res) => {
     res.json(bookings);
   } catch (err) {
     console.error('Get bookings error:', err.message);
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({ message: 'Server error', error: 'Internal error' });
   }
 });
 
@@ -58,7 +58,7 @@ router.put('/:id', auth, async (req, res) => {
     res.json(booking);
   } catch (err) {
     console.error('Update booking error:', err.message);
-    res.status(400).json({ message: err.message });
+    res.status(400).json({ message: 'Failed to update booking' });
   }
 });
 
@@ -70,7 +70,7 @@ router.delete('/:id', auth, async (req, res) => {
     res.json({ message: 'Booking deleted' });
   } catch (err) {
     console.error('Delete booking error:', err.message);
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({ message: 'Server error', error: 'Internal error' });
   }
 });
 
