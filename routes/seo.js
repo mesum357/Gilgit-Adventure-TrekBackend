@@ -80,8 +80,10 @@ router.get('/sitemap-pages.xml', async (req, res) => {
 
     const pages = [
       { loc: '/', priority: '1.0', changefreq: 'daily' },
+      { loc: '/Tashfeen.html', priority: '0.9', changefreq: 'monthly' },
       { loc: '/destinations.html', priority: '0.9', changefreq: 'weekly' },
       { loc: '/treks.html', priority: '0.9', changefreq: 'weekly' },
+      { loc: '/about.html', priority: '0.7', changefreq: 'monthly' },
       { loc: '/culture.html', priority: '0.8', changefreq: 'weekly' },
       { loc: '/gallery.html', priority: '0.7', changefreq: 'weekly' },
       { loc: '/jeep-safaris.html', priority: '0.9', changefreq: 'weekly' },

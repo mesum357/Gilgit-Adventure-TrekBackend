@@ -40,6 +40,8 @@ app.use(compression());
 app.use(helmet({
   contentSecurityPolicy: false, // Disabled — inline scripts and external resources are used
   crossOriginEmbedderPolicy: false, // Allows loading cross-origin images/videos
+  crossOriginResourcePolicy: { policy: 'cross-origin' }, // Allow Facebook/WhatsApp/Twitter to fetch OG images
+  crossOriginOpenerPolicy: false, // Allow social media crawlers
   hsts: { maxAge: 31536000, includeSubDomains: true } // 1 year HSTS
 }));
 
