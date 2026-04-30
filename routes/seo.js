@@ -16,14 +16,13 @@ router.get('/robots.txt', async (req, res) => {
 User-agent: *
 Allow: /
 
-# Block admin panel & API
+# Block admin panel & API from crawling
 Disallow: /admin/
 Disallow: /api/
+Disallow: /uploads/
 
-# Block auth pages from indexing
-Disallow: /login.html
-Disallow: /register.html
-Disallow: /profile.html
+# Auth pages use <meta name="robots" content="noindex, nofollow"> instead
+# so Google can crawl them, see the noindex tag, and properly de-index them.
 
 # Sitemaps
 Sitemap: ${baseUrl}/sitemap-index.xml
