@@ -98,7 +98,7 @@ app.use('/api', apiLimiter);
 app.use((req, res, next) => {
   const url = req.url;
   if (url.match(/\.(css|js|jpg|jpeg|png|gif|webp|svg|ico|woff2?|mp4)$/i)) {
-    res.setHeader('Cache-Control', 'public, max-age=86400'); // 1 day
+    res.setHeader('Cache-Control', 'public, max-age=2592000'); // 30 days
   }
   next();
 });
@@ -168,9 +168,10 @@ app.get(['/', '/index.html'], async (req, res) => {
       apiCache.timestamp = Date.now();
     }
 
-    // Inject data into HTML before </head>
-    // Escape </script> and <!-- to prevent XSS via database content
-    const safeJson = JSON.stringify(data).replace(/</g, '\\u003c').replace(/>/g, '\\u003e');
+    // Only inject above-fold data (destinations + settings) to keep HTML small.
+    // Reviews, team, videos, gallery are fetched async by main.js after first paint.
+    const liteData = { destinations: data.destinations, settings: data.settings };
+    const safeJson = JSON.stringify(liteData).replace(/</g, '\\u003c').replace(/>/g, '\\u003e');
     const injection = '<script>window.__inlineData=' + safeJson + '</script>';
     const html = indexHtmlCache.replace('</head>', injection + '\n</head>');
 
